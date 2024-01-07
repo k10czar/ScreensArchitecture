@@ -11,7 +11,7 @@ public interface IScreenLogicExecutionObserver
 public interface ILogicUiScreenManager
 {
     bool HasStack { get; }
-    void Back();
+    bool Back();
     T Open<T>() where T : LogicUiScreen, new();
     T OpenNew<T>() where T : LogicUiScreen, new();
 }
@@ -34,12 +34,18 @@ public class LogicUiScreenManager : ILogicUiScreenManager, IScreenLogicExecution
     public ICachedReference<LogicUiScreen> CurrentScreen => _currentScreen;
     
     public bool HasStack => _stack.Count > 1;
-    public void Back()
+    public bool Back()
     {
         if( !HasStack )
         {
             if( _debugErrors ) Debug.LogError( $"Do {"not".Colorfy(Names)} has screen to get back\n{StackDebug()}" );
+            return false;
         }
+        _stack.RemoveAt( _stack.Count - 1 );
+        var returnScreen = _stack[ _stack.Count - 1 ];
+        _currentScreen.ChangeReference( returnScreen );
+        if( _debugLogs ) Debug.Log( returnScreen.ActionsDebugColored() );
+        return true;
     }
 
     public string StackDebug() => $"{"LogicUiScreenManager".Colorfy(TypeName)}.{"stack".Colorfy(Fields)}: {string.Join( ", ", _stack )}";
@@ -68,7 +74,7 @@ public class LogicUiScreenManager : ILogicUiScreenManager, IScreenLogicExecution
     {
         _stack.Add( screen );
         _currentScreen.ChangeReference( screen );
-        if( _debugLogs ) Debug.Log( screen.ActionsDebug() );
+        if( _debugLogs ) Debug.Log( screen.ActionsDebugColored() );
     }
 
     public int IndexOf<T>() where T : LogicUiScreen

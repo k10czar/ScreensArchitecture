@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using static Colors.Console;
+
 public class VisualWidgetManager : ICustomDisposableKill
 {
     IVisualWidgetHooksDataSource _data;
@@ -74,7 +76,7 @@ public class VisualWidgetManager : ICustomDisposableKill
                 var data = _data.GetWidgetHookData( requestedType );
                 if( data == null ) 
                 {
-                    Debug.LogError( $"Cannot find hook for {requestedType}" );
+                    Debug.LogError( $"{"Cannot".Colorfy(Negation)} find {"hook".Colorfy(Interfaces)} for {requestedType.ToStringOrNullColored(TypeName)}" );
                     continue;
                 }
 
@@ -83,12 +85,12 @@ public class VisualWidgetManager : ICustomDisposableKill
                     var widget = go.GetComponent<IVisualWidget>();
                     if( widget == null )
                     {
-                        Debug.LogError( $"Cannot find widget component on {go.HierarchyNameOrNull()} but should have {requestedType} component" );
+                        Debug.LogError( $"{"Cannot".Colorfy(Negation)} find widget component on {go.HierarchyNameOrNull()} but should have {requestedType.ToStringOrNullColored(TypeName)} component" );
                         GameObject.Destroy( go );
                     }
                     else
                     {
-                        Debug.Log( $"Creating {widget.GetType()}" );
+                        Debug.Log( $"{"Creating".Colorfy(Verbs)} {widget.GetType().ToStringOrNullColored(TypeName)}" );
                         request.StartInstance( widget );
                         _currentWidgets.Add( widget );
                         widget?.Show();

@@ -15,8 +15,8 @@ public abstract class LogicUiScreen
 
     protected ILogicUiScreenManager Manager => _manager;
 
-    public bool HasBack => _manager.HasStack;
-    public void Back() { _manager.Back(); }
+    public virtual bool HasBack => _manager.HasStack;
+    public virtual void Back() { _manager.Back(); }
 
     public void SetUiManager( ILogicUiScreenManager manager )
     {
@@ -25,7 +25,7 @@ public abstract class LogicUiScreen
 
     private List<System.Reflection.MethodInfo> _cachedActions;
     
-    public IEnumerable<System.Reflection.MethodInfo> Actions
+    public IReadOnlyList<System.Reflection.MethodInfo> Actions
     {
         get
         {
@@ -45,5 +45,6 @@ public abstract class LogicUiScreen
         }
     }
 
-    public string ActionsDebug() => $"{this.GetType().ToStringOrNull().Colorfy(TypeName)}.{"Actions".Colorfy(Fields)}:\n    {string.Join(",\n    ", Actions.Numerated())}";
+    public string ActionsDebugColored() => $"{this.GetType().ToStringOrNull().Colorfy(TypeName)}.{"Actions".Colorfy(Fields)}:\n    {string.Join(",\n    ", Actions.Numerated())}";
+    public string ActionsDebug() => $"{this.GetType().ToStringOrNull()}.Actions:\n    {string.Join(",\n    ", Actions.Numerated())}";
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+using static Colors.Console;
 
 public interface IAnimationExecution : ICustomDisposableKill, IAsyncOperationObserver
 {
@@ -200,7 +201,7 @@ public class UiAnimation
                 var finalValue = data._animateFromValue ? _floatInteractor.Value : data._floatValue;
                 _initialValue = data._animateFromValue ? data._floatValue : _floatInteractor.Value;
                 _deltaValue = finalValue - _initialValue;
-                Debug.Log( $"{data._component.HierarchyNameOrNull()}.UiFloatAnimationExecution( {_initialValue} -> {finalValue} )" );
+                Debug.Log( $"{data._component.HierarchyNameOrNull().Colorfy(Names)}.{"UiFloatAnimationExecution".Colorfy(Verbs)}( {_initialValue.ToStringColored(Numbers)} -> {finalValue.ToStringColored(Numbers)} )" );
                 SetValue( IsDone.Value ? 1 : 0 );
             }
 
