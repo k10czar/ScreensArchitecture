@@ -16,7 +16,7 @@ public class VisualWidgetManager : ICustomDisposableKill
 
     public VisualWidgetManager( IVisualWidgetHooksDataSource data, IReferenceHolder<GameObject> gameObjectHolder )
     {
-        Debug.Log( $"<color=yellow>VisualWidgetManager</color> registered with {data.ToStringOrNull()}" );
+        Debug.Log( $"{"VisualWidgetManager".Colorfy(TypeName)} {"registered".Colorfy(Verbs)} with {data.ToStringOrNullColored( Keyword )}" );
         _data = data;
         _currentGameObjectHolder = gameObjectHolder;
         gameObjectHolder.Synchronize( _validator.Validated<GameObject>( OnGameObjectChange ) );
